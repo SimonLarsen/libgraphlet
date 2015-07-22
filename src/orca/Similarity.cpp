@@ -5,7 +5,7 @@
 #include <boost/compute/container/mapped_view.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <orca/OrcaException.hpp>
-#include <orca/Kernels.hpp>
+#include "Kernels.hpp"
 
 namespace compute = boost::compute;
 
