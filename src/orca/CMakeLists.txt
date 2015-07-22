@@ -3,7 +3,7 @@ set(ORCA_SOURCES
 	Similarity.cpp
 )
 
-if(NOT ORCA_NO_OPENCL)
+if(ORCA_WITH_OPENCL)
 	list(APPEND ORCA_SOURCES SimilarityGPU.cpp)
 endif()
 

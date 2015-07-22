@@ -3,11 +3,11 @@ project(liborca)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-set(ORCA_NO_OPENCL false CACHE BOOL "Compile without OpenCL")
+set(ORCA_WITH_OPENCL false CACHE BOOL "Compile with OpenCL")
 
-if(NOT ORCA_NO_OPENCL)
+if(ORCA_WITH_OPENCL)
 	find_package(OpenCL 1.1 REQUIRED)
 endif()
 
