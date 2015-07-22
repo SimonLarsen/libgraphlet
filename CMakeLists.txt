@@ -5,7 +5,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-find_package(OpenCL 1.1 REQUIRED)
+set(ORCA_NO_OPENCL false CACHE BOOL "Compile without OpenCL")
+
+if(NOT ORCA_NO_OPENCL)
+	find_package(OpenCL 1.1 REQUIRED)
+endif()
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/compute/include
