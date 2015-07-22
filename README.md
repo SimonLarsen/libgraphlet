@@ -1,2 +1,4 @@
-# liborca
-Embedded Orca graphlet counter library
+liborca
+=======
+
+Embeddable Orca graphlet counter library.
