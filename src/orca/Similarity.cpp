@@ -1,11 +1,12 @@
 #include <orca/Similarity.hpp>
 
 #include <iostream>
+#include <algorithm>
 #include <boost/log/trivial.hpp>
 #include <orca/OrcaException.hpp>
 
 namespace {
-	const int WEIGHTS[73] = {
+	const int AFFECTED[73] = {
 		1, 2, 2, 2, 3, 4, 3, 3, 4, 3,
 		4, 4, 4, 4, 3, 4, 6, 5, 4, 5,
 		6, 6, 4, 4, 4, 5, 7, 4, 6, 6,
@@ -31,10 +32,11 @@ namespace orca {
 		const size_t na = oa.getOrbits().size1();
 		const size_t nb = ob.getOrbits().size1();
 
-		unsigned int weights_sum = 0;
-		for(unsigned int i = 0; i < orbits; ++i) {
-			weights_sum += WEIGHTS[i];
+		std::vector<float> weights(orbits);
+		for(size_t k = 0; k < orbits; ++k) {
+			weights[k] = 1.0f - log(AFFECTED[k]) / log(orbits);
 		}
+		float weights_sum = std::accumulate(weights.begin(), weights.end(), 0.0f);
 
 		sim.resize(na, nb);
 
@@ -45,13 +47,12 @@ namespace orca {
 					int64_t aik = oa.getOrbits()(i, k);
 					int64_t bjk = ob.getOrbits()(j, k);
 
-					float w = 1.0f - log(WEIGHTS[k]) / log(orbits);
 					float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
 					float denom = log(std::max(aik, bjk) + 2.0f);
-					D += w * num / denom;
+					D += weights[k] * num / denom;
 				}
 
-				sim(i, j) = 1.0f - D / (float)weights_sum;
+				sim(i, j) = 1.0f - D / weights_sum;
 			}
 		}
 	}

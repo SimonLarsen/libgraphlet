@@ -10,8 +10,8 @@ __kernel void orca_compute_similarity(
 	const uint na,
 	const uint nb,
 	const uint orbits,
-	const uint weights_sum,
-	__constant uint *weights,
+	const float weights_sum,
+	__constant float *weights,
 	__global long *a,
 	__global long *b,
 	__global float *sim
@@ -27,14 +27,13 @@ __kernel void orca_compute_similarity(
 				ulong aik = a[i*orbits + k];
 				ulong bjk = b[j*orbits + k];
 
-				float w = 1.0f - log((float)weights[k]) / log((float)orbits);
 				float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
 				float denom = log(max(aik, bjk) + 2.0f);
-				D += w * num / denom;
+				D += weights[k] * num / denom;
 			}
 
 			// Map distance to similarity
-			sim[i*na + j] = 1.0f - D / (float)weights_sum;
+			sim[i*na + j] = 1.0f - D / weights_sum;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include <orca/SimilarityGPU.hpp>
 
 #include <iostream>
+#include <algorithm>
 #include <boost/compute/container/mapped_view.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <orca/OrcaException.hpp>
@@ -9,7 +10,7 @@
 namespace compute = boost::compute;
 
 namespace {
-	const int WEIGHTS[73] = {
+	const int AFFECTED[73] = {
 		1, 2, 2, 2, 3, 4, 3, 3, 4, 3,
 		4, 4, 4, 4, 3, 4, 6, 5, 4, 5,
 		6, 6, 4, 4, 4, 5, 7, 4, 6, 6,
@@ -36,10 +37,11 @@ namespace orca {
 		const size_t na = oa.getOrbits().size1();
 		const size_t nb = ob.getOrbits().size1();
 
-		unsigned int weights_sum = 0;
-		for(unsigned int i = 0; i < orbits; ++i) {
-			weights_sum += WEIGHTS[i];
+		std::vector<float> weights(orbits);
+		for(size_t k = 0; k < orbits; ++k) {
+			weights[k] = 1.0f - log(AFFECTED[k]) / log(orbits);
 		}
+		float weights_sum = std::accumulate(weights.begin(), weights.end(), 0.0f);
 
 		compute::context context(device);
 		compute::command_queue queue(context, device);
@@ -74,7 +76,12 @@ namespace orca {
 		kernel.set_arg(arg++, map_b.get_buffer());
 		kernel.set_arg(arg++, buf_sim);
 
-		compute::copy(WEIGHTS, WEIGHTS+orbits, buf_weights.begin(), queue);
+		compute::copy(
+			weights.begin(),
+			weights.end(),
+			buf_weights.begin(),
+			queue
+		);
 		queue.enqueue_1d_range_kernel(kernel, 0, 1024, 0);
 
 		sim.resize(na, nb);
