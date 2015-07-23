@@ -70,7 +70,7 @@ namespace orca {
 		kernel.set_arg(arg++, (cl_uint)na);
 		kernel.set_arg(arg++, (cl_uint)nb);
 		kernel.set_arg(arg++, (cl_uint)orbits);
-		kernel.set_arg(arg++, (cl_uint)weights_sum);
+		kernel.set_arg(arg++, (cl_float)weights_sum);
 		kernel.set_arg(arg++, buf_weights);
 		kernel.set_arg(arg++, map_a.get_buffer());
 		kernel.set_arg(arg++, map_b.get_buffer());
