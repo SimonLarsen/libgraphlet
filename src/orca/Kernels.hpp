@@ -33,7 +33,7 @@ __kernel void orca_compute_similarity(
 			}
 
 			// Map distance to similarity
-			sim[i*na + j] = 1.0f - D / weights_sum;
+			sim[i*nb + j] = 1.0f - D / weights_sum;
 		}
 	}
 }
