@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <algorithm>
-#include <boost/log/trivial.hpp>
 #include <orca/OrcaException.hpp>
 
 namespace {
