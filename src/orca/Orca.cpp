@@ -31,12 +31,12 @@ namespace orca {
 
 		// Set up adjacency, incidence lists
 		adj.resize(n);
-		for(int i = 0; i < n; ++i) {
+		for(size_t i = 0; i < n; ++i) {
 			adj[i].resize(deg[i]);
 		}
 
 		inc.resize(n);
-		for(int i = 0; i < n; ++i) {
+		for(size_t i = 0; i < n; ++i) {
 			inc[i].resize(deg[i]);
 		}
 
@@ -51,7 +51,7 @@ namespace orca {
 			inc[b][d[b]] = std::pair<int,int>(a,i);
 			d[a]++; d[b]++;
 		}
-		for(int i = 0; i < n; i++) {
+		for(size_t i = 0; i < n; i++) {
 			std::sort(adj[i].begin(), adj[i].end());
 			std::sort(inc[i].begin(), inc[i].end());
 		}
