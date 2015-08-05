@@ -17,8 +17,8 @@ namespace orca {
 	, graphlet_size(graphlet_size)
 	, deg(n, 0)
 	{
-		if(graphlet_size < 4 || graphlet_size > 5) {
-			throw OrcaException("Only graphlets of size 4 or 5 supported.");
+		if(graphlet_size < 2 || graphlet_size > 5) {
+			throw OrcaException("Only graphlets of size 2-5 supported.");
 		}
 
 		// read input graph
@@ -63,12 +63,49 @@ namespace orca {
 	}
 
 	void Orca::compute() {
-		if(graphlet_size == 4) count4();
+		if(graphlet_size <= 3) count3();
+		else if(graphlet_size == 4) count4();
 		else if(graphlet_size == 5) count5();
 	}
 
 	const Signature &Orca::getOrbits() const {
 		return orbit;
+	}
+
+	void Orca::count2() {
+		for(int x = 0; x < n; ++x) {
+			orbit(x, 0) = deg[x];
+		}
+	}
+
+	void Orca::count3() {
+		// set up a system of equations relating orbits for every node
+		for (int x = 0; x < n; x++) {
+			orbit(x, 0) = deg[x];
+			// x - middle node
+			for (int nx1 = 0; nx1 < deg[x]; nx1++) {
+				int y=inc[x][nx1].first;
+				for (int nx2 = nx1+1; nx2 < deg[x]; nx2++) {
+					int z = inc[x][nx2].first;
+					if (adjacent(y,z)) { // triangle
+						orbit(x, 3)++;
+					} else { // path
+						orbit(x, 2)++;
+					}
+				}
+			}
+			// x - side node
+			for (int nx1 = 0; nx1 < deg[x]; nx1++) {
+				int y=inc[x][nx1].first;
+				for (int ny=0; ny < deg[y]; ny++) {
+					int z = inc[y][ny].first;
+					if (x == z) continue;
+					if (!adjacent(x,z)) { // path
+						orbit(x, 1)++;
+					}
+				}
+			}
+		}
 	}
 
 	void Orca::count4() {

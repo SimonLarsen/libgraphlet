@@ -24,6 +24,8 @@ namespace orca {
 			int graphletSize() const;
 
 		private:
+			void count2();
+			void count3();
 			void count4();
 			void count5();
 
