@@ -63,7 +63,8 @@ namespace orca {
 	}
 
 	void Orca::compute() {
-		if(graphlet_size <= 3) count3();
+		if(graphlet_size == 2) count2();
+		else if(graphlet_size == 3) count3();
 		else if(graphlet_size == 4) count4();
 		else if(graphlet_size == 5) count5();
 	}
