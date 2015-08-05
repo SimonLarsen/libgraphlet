@@ -14,8 +14,10 @@ if(ORCA_WITH_OPENCL)
 endif()
 
 include_directories(
+	${CMAKE_SOURCE_DIR}/tclap/include
+	${CMAKE_SOURCE_DIR}/libgraph/include
 	${CMAKE_SOURCE_DIR}/compute/include
 	${CMAKE_SOURCE_DIR}/include
 )
 
-add_subdirectory(src/orca)
+add_subdirectory(src)
