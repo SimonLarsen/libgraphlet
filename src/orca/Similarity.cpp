@@ -32,8 +32,13 @@ namespace orca {
 		const size_t nb = ob.getOrbits().size1();
 
 		std::vector<float> weights(orbits);
-		for(size_t k = 0; k < orbits; ++k) {
-			weights[k] = 1.0f - log(AFFECTED[k]) / log(orbits);
+
+		if(orbits > 1) {
+			for(size_t k = 0; k < orbits; ++k) {
+				weights[k] = 1.0f - log(AFFECTED[k]) / log(orbits);
+			}
+		} else {
+			weights[0] = 1.0f;
 		}
 		float weights_sum = std::accumulate(weights.begin(), weights.end(), 0.0f);
 
