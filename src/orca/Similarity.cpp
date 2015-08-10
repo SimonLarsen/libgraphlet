@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <numeric>
 #include <orca/OrcaException.hpp>
 
 namespace {
