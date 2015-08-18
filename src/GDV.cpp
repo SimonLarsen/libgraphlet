@@ -18,13 +18,13 @@ int main(int argc, const char **argv) {
 	cmd.parse(argc, argv);
 
 	// Read graph
-	graph::Graph<> g;
+	graph::Graph g;
 	graph::readGraph(graphArg.getValue(), g);
 	std::vector<std::pair<size_t,size_t>> edges;
 	graph::get_edges(g, edges);
 
 	// Compute GDVs
-	orca::Orca orca(g.vertexCount(), edges, graphletSizeArg.getValue());
+	orca::Orca orca(num_vertices(g), edges, graphletSizeArg.getValue());
 	orca.compute();
 
 	// Write to file

@@ -21,24 +21,24 @@ int main(int argc, const char **argv) {
 
 	// Load graphs
 	std::cerr << "Loading graphs (1/2)";
-	graph::Graph<> g1;
+	graph::Graph g1;
 	graph::readGraph(graph1Arg.getValue(), g1);
 	std::vector<std::pair<size_t,size_t>> edges1;
 	graph::get_edges(g1, edges1);
 
 	std::cerr << "\rLoading graphs (2/2)" << std::endl;
-	graph::Graph<> g2;
+	graph::Graph g2;
 	graph::readGraph(graph2Arg.getValue(), g2);
 	std::vector<std::pair<size_t,size_t>> edges2;
 	graph::get_edges(g2, edges2);
 
 	// Compute GDVs
 	std::cerr << "Computing graphlet degree vectors (1/2)";
-	orca::Orca orca1(g1.vertexCount(), edges1, graphletSizeArg.getValue());
+	orca::Orca orca1(num_vertices(g1), edges1, graphletSizeArg.getValue());
 	orca1.compute();
 
 	std::cerr << "\rComputing graphlet degree vectors (2/2)" << std::endl;
-	orca::Orca orca2(g2.vertexCount(), edges2, graphletSizeArg.getValue());
+	orca::Orca orca2(num_vertices(g2), edges2, graphletSizeArg.getValue());
 	orca2.compute();
 
 	// Compute similarity matrix
