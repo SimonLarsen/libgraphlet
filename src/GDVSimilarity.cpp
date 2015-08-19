@@ -7,6 +7,14 @@
 #include <orca/Orca.hpp>
 #include <orca/Similarity.hpp>
 
+typedef typename boost::adjacency_list<
+	boost::setS,
+	boost::vecS,
+	boost::undirectedS,
+	graph::LabeledVertex,
+	graph::LabeledEdge
+> Graph;
+
 int main(int argc, const char **argv) {
 	TCLAP::CmdLine cmd("Compute GDV similarity matrix of two networks.", ' ', "0.1");
 	StdOutput std_output("gdv_similarity", "Simon Larsen <simonhffh@gmail.com>");
@@ -21,14 +29,16 @@ int main(int argc, const char **argv) {
 
 	// Load graphs
 	std::cerr << "Loading graphs (1/2)";
-	graph::Graph g1;
+	Graph g1;
 	graph::readGraph(graph1Arg.getValue(), g1);
+	graph::removeEdgeLoops(g1);
 	std::vector<std::pair<size_t,size_t>> edges1;
 	graph::get_edges(g1, edges1);
 
 	std::cerr << "\rLoading graphs (2/2)" << std::endl;
-	graph::Graph g2;
+	Graph g2;
 	graph::readGraph(graph2Arg.getValue(), g2);
+	graph::removeEdgeLoops(g2);
 	std::vector<std::pair<size_t,size_t>> edges2;
 	graph::get_edges(g2, edges2);
 

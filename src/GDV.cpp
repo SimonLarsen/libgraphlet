@@ -6,6 +6,14 @@
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
 
+typedef typename boost::adjacency_list<
+	boost::setS,
+	boost::vecS,
+	boost::undirectedS,
+	graph::LabeledVertex,
+	graph::LabeledEdge
+> Graph;
+
 int main(int argc, const char **argv) {
 	TCLAP::CmdLine cmd("Count graphlet degree vectors.", ' ', "0.1");
 	StdOutput std_output("gdv", "Simon Larsen <simonhffh@gmail.com>");
@@ -18,8 +26,9 @@ int main(int argc, const char **argv) {
 	cmd.parse(argc, argv);
 
 	// Read graph
-	graph::Graph g;
+	Graph g;
 	graph::readGraph(graphArg.getValue(), g);
+	graph::removeEdgeLoops(g);
 	std::vector<std::pair<size_t,size_t>> edges;
 	graph::get_edges(g, edges);
 
