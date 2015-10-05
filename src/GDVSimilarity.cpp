@@ -1,6 +1,7 @@
 #include "StdOutput.hpp"
 #include <fstream>
 #include <tclap/CmdLine.h>
+#include <boost/format.hpp>
 #include <graph/Graph.hpp>
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
@@ -58,11 +59,10 @@ int main(int argc, const char **argv) {
 
 	// Write to file
 	std::ofstream file(outputArg.getValue());
-	for(auto it1 = sim.begin1(); it1 != sim.end1(); ++it1) {
-		for(auto it = it1.begin(); it != it1.end(); ++it) {
-			file << *it << " ";
+	for(size_t i = 0; i < num_vertices(g1); ++i) {
+		for(size_t j = 0; j < num_vertices(g2); ++j) {
+			file << boost::format("%s\t%s\t%f\n") % g1[i].label % g2[j].label % sim(i, j);
 		}
-		file << "\n";
 	}
 	file.close();
 

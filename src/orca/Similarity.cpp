@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
+#include <chrono>
+#include <thread>
 #include <orca/OrcaException.hpp>
 
 namespace {
@@ -44,20 +46,39 @@ namespace orca {
 
 		sim.resize(na, nb);
 
-		for(size_t i = 0; i < na; ++i) {
-			for(size_t j = 0; j < nb; ++j) {
-				float D = 0.0f;
-				for(size_t k = 0; k < orbits; ++k) {
-					int64_t aik = oa.getOrbits()(i, k);
-					int64_t bjk = ob.getOrbits()(j, k);
+		auto start_time = std::chrono::system_clock::now();
 
-					float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
-					float denom = log(std::max(aik, bjk) + 2.0f);
-					D += weights[k] * num / denom;
+		size_t nthreads = std::thread::hardware_concurrency();
+		std::vector<std::thread> threads;
+
+		for(size_t p = 0; p < nthreads; ++p) {
+			threads.emplace_back(std::thread(
+				[&, p](){
+					for(size_t i = p; i < na; i += nthreads) {
+						for(size_t j = 0; j < nb; ++j) {
+							float D = 0.0f;
+							for(size_t k = 0; k < orbits; ++k) {
+								int64_t aik = oa.getOrbits()(i, k);
+								int64_t bjk = ob.getOrbits()(j, k);
+
+								float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
+								float denom = log(std::max(aik, bjk) + 2.0f);
+								D += weights[k] * num / denom;
+							}
+
+							sim(i, j) = 1.0f - D / weights_sum;
+						}
+					}
 				}
-
-				sim(i, j) = 1.0f - D / weights_sum;
-			}
+			));
 		}
+
+		for(auto &t : threads) {
+			t.join();
+		}
+
+		auto end_time = std::chrono::system_clock::now();
+
+		std::cerr << "time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time-start_time).count() << " ms" << std::endl;
 	}
 }

@@ -20,4 +20,21 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/include
 )
 
-add_subdirectory(src)
+add_executable(gdv
+	${CMAKE_SOURCE_DIR}/src/GDV.cpp
+)
+
+target_link_libraries(gdv
+	orca
+)
+
+add_executable(gdv_similarity
+	${CMAKE_SOURCE_DIR}/src/GDVSimilarity.cpp
+)
+
+target_link_libraries(gdv_similarity
+	orca
+	pthread
+)
+
+add_subdirectory(src/orca)
