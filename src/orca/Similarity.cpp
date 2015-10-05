@@ -3,7 +3,6 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
-#include <chrono>
 #include <thread>
 #include <orca/OrcaException.hpp>
 
@@ -46,8 +45,6 @@ namespace orca {
 
 		sim.resize(na, nb);
 
-		auto start_time = std::chrono::system_clock::now();
-
 		size_t nthreads = std::thread::hardware_concurrency();
 		std::vector<std::thread> threads;
 
@@ -76,9 +73,5 @@ namespace orca {
 		for(auto &t : threads) {
 			t.join();
 		}
-
-		auto end_time = std::chrono::system_clock::now();
-
-		std::cerr << "time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time-start_time).count() << " ms" << std::endl;
 	}
 }
