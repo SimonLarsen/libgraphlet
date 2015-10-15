@@ -11,7 +11,8 @@ typedef typename boost::adjacency_list<
 	boost::vecS,
 	boost::undirectedS,
 	graph::LabeledVertex,
-	graph::LabeledEdge
+	graph::LabeledEdge,
+	graph::LabeledGraph
 > Graph;
 
 int main(int argc, const char **argv) {
