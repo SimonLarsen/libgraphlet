@@ -37,4 +37,12 @@ target_link_libraries(gdv_similarity
 	pthread
 )
 
+add_executable(gdd
+	${CMAKE_SOURCE_DIR}/src/GDD.cpp
+)
+
+target_link_libraries(gdd
+	orca
+)
+
 add_subdirectory(src/orca)

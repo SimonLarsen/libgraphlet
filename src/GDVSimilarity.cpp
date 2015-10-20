@@ -1,26 +1,19 @@
-#include "StdOutput.hpp"
 #include <fstream>
 #include <tclap/CmdLine.h>
 #include <boost/format.hpp>
-#include <graph/Graph.hpp>
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
 #include <orca/Similarity.hpp>
-
-typedef typename boost::adjacency_list<
-	boost::setS,
-	boost::vecS,
-	boost::undirectedS,
-	graph::LabeledVertex,
-	graph::LabeledEdge,
-	graph::LabeledGraph
-> Graph;
+#include "Graph.hpp"
 
 int main(int argc, const char **argv) {
-	TCLAP::CmdLine cmd("Compute GDV similarity matrix of two networks.", ' ', "0.1");
-	StdOutput std_output("gdv_similarity", "Simon Larsen <simonhffh@gmail.com>");
-	cmd.setOutput(&std_output);
+	TCLAP::CmdLine cmd(
+		"gdv_similarity",
+		"Compute GDV similarity matrix of two networks.",
+		"0.1",
+		"Simon Larsen <simonhffh@gmail.com>"
+	);
 
 	TCLAP::ValueArg<int> graphletSizeArg("s", "size", "Graphlet size. 2-5 supported. Default: 4", false, 4, "size", cmd);
 	TCLAP::UnlabeledValueArg<std::string> graph1Arg("graph1", "Path to first graph file", true, "", "GRAPH", cmd);

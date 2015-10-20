@@ -1,5 +1,6 @@
 set(ORCA_SOURCES
 	Orca.cpp
+	GDD.cpp
 	Similarity.cpp
 )
 

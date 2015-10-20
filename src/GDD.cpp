@@ -3,12 +3,13 @@
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
+#include <orca/GDD.hpp>
 #include "Graph.hpp"
 
 int main(int argc, const char **argv) {
 	TCLAP::CmdLine cmd(
-		"gdv",
-		"Count graphlet degree vectors.",
+		"gdd",
+		"Compute graphlet degree distribution (GDD).",
 		"0.1",
 		"Simon Larsen <simonhffh@gmail.com>"
 	);
@@ -16,10 +17,12 @@ int main(int argc, const char **argv) {
 	TCLAP::ValueArg<int> graphletSizeArg("s", "size", "Graphlet size. 2-5 supported. Default: 4", false, 4, "size", cmd);
 	TCLAP::UnlabeledValueArg<std::string> graphArg("graph", "Path to graph file", true, "", "GRAPH", cmd);
 	TCLAP::UnlabeledValueArg<std::string> outputArg("output", "Output file", true, "", "FILE", cmd);
+	TCLAP::SwitchArg normalizeSwitch("n", "normalize", "Normalize distribution", cmd, false);
 
 	cmd.parse(argc, argv);
 
 	// Read graph
+	std::cerr << "Loading graph" << std::endl;
 	Graph g;
 	graph::readGraph(graphArg.getValue(), g);
 	graph::removeEdgeLoops(g);
@@ -27,15 +30,27 @@ int main(int argc, const char **argv) {
 	graph::get_edges(g, edges);
 
 	// Compute GDVs
+	std::cerr << "Computing graphlet degree vectors" << std::endl;
 	orca::Orca orca(num_vertices(g), edges, graphletSizeArg.getValue());
 	orca.compute();
 
-	// Write to file
-	const auto &orbits = orca.getOrbits();
+	// Compute GDD
+	std::cerr << "Computing graphlet degree distribution" << std::endl;
+	std::vector<std::vector<float>> gdd;
+	orca::gdd(orca, gdd, normalizeSwitch.getValue());
+
+	// Write GDD to file
 	std::ofstream file(outputArg.getValue());
-	for(auto it1 = orbits.begin1(); it1 != orbits.end1(); ++it1) {
-		for(auto it = it1.begin(); it != it1.end(); ++it) {
-			file << *it << " ";
+	for(auto &v : gdd) {
+		size_t max_key = v.rbegin().first;
+
+		for(size_t i = 0; i <= max_key; ++i) {
+			if(v.find(i) != v.end()) {
+				fiel << v[i];
+			} else {
+				file << "0";
+			}
+			if(i < max_key) file << " ";
 		}
 		file << "\n";
 	}
