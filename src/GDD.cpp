@@ -36,17 +36,17 @@ int main(int argc, const char **argv) {
 
 	// Compute GDD
 	std::cerr << "Computing graphlet degree distribution" << std::endl;
-	std::vector<std::vector<float>> gdd;
+	orca::GDD gdd;
 	orca::gdd(orca, gdd, normalizeSwitch.getValue());
 
 	// Write GDD to file
 	std::ofstream file(outputArg.getValue());
 	for(auto &v : gdd) {
-		size_t max_key = v.rbegin().first;
+		size_t max_key = v.rbegin()->first;
 
 		for(size_t i = 0; i <= max_key; ++i) {
 			if(v.find(i) != v.end()) {
-				fiel << v[i];
+				file << v[i];
 			} else {
 				file << "0";
 			}

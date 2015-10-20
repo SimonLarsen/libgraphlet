@@ -1,10 +1,11 @@
 #include <iostream>
 #include <orca/GDD.hpp>
+#include <orca/OrcaException.hpp>
 
 namespace orca {
 	void gdd(
 		const Orca &orca,
-		std::vector<std::map<size_t,float>> &gdd,
+		GDD &gdd,
 		bool normalize
 	) {
 		int orbits = ORBITS[orca.graphletSize()];
@@ -49,6 +50,46 @@ namespace orca {
 					it.second /= sum;
 				}
 			}
+		}
+	}
+
+	/**
+	 * Calculates the GDD-agreement vector of two GDDs.
+	 * Note: GDDs must be normalized!
+	 */
+	void gdd_agreement(
+		const GDD &a,
+		const GDD &b,
+		std::vector<float> &out
+	) {
+		if(a.size() != b.size()) {
+			throw OrcaException("GDDs not of same size");
+		}
+
+		size_t n = a.size();
+		out.resize(n);
+
+		for(size_t i = 0; i < n; ++i) {
+			size_t a_max = a[i].rbegin()->first;
+			size_t b_max = b[i].rbegin()->first;
+			size_t m = std::max(a_max, b_max);
+
+			float sum = 0.0f;
+			for(size_t j = 0; j <= m; ++j) {
+				float a_value = 0.0f;
+				float b_value = 0.0f;
+
+				if(a[i].find(j) != a[i].end()) {
+					a_value = a[i].at(j);
+				}
+				if(b[i].find(j) != b[i].end()) {
+					b_value = b[i].at(j);
+				}
+
+				sum += std::pow(a_value - b_value, 2.0f);
+			}
+
+			out[i] = 1.0f - std::sqrt(sum) / std::sqrt(2.0f);
 		}
 	}
 }

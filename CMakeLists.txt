@@ -45,4 +45,12 @@ target_link_libraries(gdd
 	orca
 )
 
+add_executable(gdd_agreement
+	${CMAKE_SOURCE_DIR}/src/GDDAgreement.cpp
+)
+
+target_link_libraries(gdd_agreement
+	orca
+)
+
 add_subdirectory(src/orca)
