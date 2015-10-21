@@ -15,11 +15,13 @@ namespace orca {
 
 		auto &sig = orca.getOrbits();
 
-		// Calculate djG(k)
+		// Calculate degree distributions
 		for(auto it1 = sig.begin1(); it1 != sig.end1(); ++it1) {
 			size_t j = 0;
 			for(auto it = it1.begin(); it != it1.end(); ++it, ++j) {
 				auto k = *it;
+
+				if(k == 0) continue;
 
 				if(gdd[j].find(k) == gdd[j].end()) {
 					gdd[j][k] = 0.0f;
@@ -29,8 +31,8 @@ namespace orca {
 			}
 		}
 
-		// Scale by k
 		if(normalize) {
+			// Scale by k
 			for(auto &v : gdd) {
 				for(auto &it : v) {
 					if(it.first > 0) {
@@ -39,7 +41,7 @@ namespace orca {
 				}
 			}
 
-			// Normalize
+			// Normalize to [0,1]
 			for(auto &v : gdd) {
 				float sum = 0.0f;
 				for(auto &it : v) {
@@ -75,7 +77,7 @@ namespace orca {
 			size_t m = std::max(a_max, b_max);
 
 			float sum = 0.0f;
-			for(size_t j = 0; j <= m; ++j) {
+			for(size_t j = 1; j <= m; ++j) {
 				float a_value = 0.0f;
 				float b_value = 0.0f;
 
