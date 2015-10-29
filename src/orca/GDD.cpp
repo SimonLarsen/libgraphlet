@@ -72,8 +72,8 @@ namespace orca {
 		out.resize(n);
 
 		for(size_t i = 0; i < n; ++i) {
-			size_t a_max = a[i].rbegin()->first;
-			size_t b_max = b[i].rbegin()->first;
+			size_t a_max = (a[i].size() > 0 ? a[i].rbegin()->first : 0);
+			size_t b_max = (b[i].size() > 0 ? b[i].rbegin()->first : 0);
 			size_t m = std::max(a_max, b_max);
 
 			float sum = 0.0f;

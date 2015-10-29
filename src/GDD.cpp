@@ -42,7 +42,7 @@ int main(int argc, const char **argv) {
 	// Write GDD to file
 	std::ofstream file(outputArg.getValue());
 	for(auto &v : gdd) {
-		size_t max_key = v.rbegin()->first;
+		size_t max_key = (v.size() > 0 ? v.rbegin()->first : 0);
 
 		for(size_t i = 0; i <= max_key; ++i) {
 			if(v.find(i) != v.end()) {
