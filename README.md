@@ -1,8 +1,23 @@
-liborca
-=======
+libgraphlet
+===========
 
-liborca is a library for embedding the Orca graphlet counting algorithm into other software.
+libgraphlet is an embeddable graphlet counting library based on [Orca](http://www.biolab.si/supp/orca/orca.html).
 
-Original tool and algorithm by Tomaž Hočevar and Janez Demšar.
+* Graphlet counting for graphlets of size 2-5
+* Pairwise graphlet degree vector similarity
+* Graphlet degree distribution and GDD-agreement
 
-See [http://www.biolab.si/supp/orca/orca.html](http://www.biolab.si/supp/orca/orca.html) for more information.
+## Requirements ##
+
+Compiling the bundled tools requires
+
+* C++11 compliant compiler
+* Boost graph library headers
+
+## Compilation ##
+
+```
+git clone https://github.com/SimonLarsen/libgraphlet.git libgraphlet
+cd libgraphlet
+cmake . && make
+```
