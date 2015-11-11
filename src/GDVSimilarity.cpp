@@ -4,7 +4,7 @@
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
-#include <orca/Similarity.hpp>
+#include <libgraphlet/Similarity.hpp>
 #include "Graph.hpp"
 
 int main(int argc, const char **argv) {
@@ -49,7 +49,7 @@ int main(int argc, const char **argv) {
 	// Compute similarity matrix
 	std::cerr << "Computing similarity matrix" << std::endl;
 	boost::numeric::ublas::matrix<float> sim;
-	orca::similarity(orca1, orca2, sim);
+	libgraphlet::similarity(orca1, orca2, sim);
 
 	// Write to file
 	std::ofstream file(outputArg.getValue());

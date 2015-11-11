@@ -43,6 +43,7 @@ add_executable(gdv_similarity
 
 target_link_libraries(gdv_similarity
 	orca
+	graphlet
 	pthread
 )
 
@@ -52,6 +53,7 @@ add_executable(gdd
 
 target_link_libraries(gdd
 	orca
+	graphlet
 )
 
 add_executable(gdd_agreement
@@ -60,6 +62,8 @@ add_executable(gdd_agreement
 
 target_link_libraries(gdd_agreement
 	orca
+	graphlet
 )
 
 add_subdirectory(src/orca)
+add_subdirectory(src/libgraphlet)

@@ -1,10 +1,9 @@
-#include <orca/Similarity.hpp>
+#include <libgraphlet/Similarity.hpp>
 
-#include <iostream>
 #include <algorithm>
 #include <numeric>
 #include <thread>
-#include <orca/OrcaException.hpp>
+#include <stdexcept>
 
 namespace {
 	const int AFFECTED[73] = {
@@ -19,17 +18,17 @@ namespace {
 	};
 }
 
-namespace orca {
+namespace libgraphlet {
 	void similarity(
-		const Orca &oa,
-		const Orca &ob,
+		const orca::Orca &oa,
+		const orca::Orca &ob,
 		boost::numeric::ublas::matrix<float> &sim
 	) {
 		if(oa.graphletSize() != ob.graphletSize()) {
-			throw OrcaException("Orca instances not of same size.");
+			throw std::invalid_argument("Orca instances now of same size");
 		}
 		int graphlet_size = oa.graphletSize();
-		const size_t orbits = ORBITS[graphlet_size];
+		const size_t orbits = orca::ORBITS[graphlet_size];
 		const size_t na = oa.getOrbits().size1();
 		const size_t nb = ob.getOrbits().size1();
 

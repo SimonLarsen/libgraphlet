@@ -4,7 +4,6 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include <orca/OrcaException.hpp>
 
 namespace orca {
 	Orca::Orca(
@@ -18,7 +17,7 @@ namespace orca {
 	, deg(n, 0)
 	{
 		if(graphlet_size < 2 || graphlet_size > 5) {
-			throw OrcaException("Only graphlets of size 2-5 supported.");
+			throw std::invalid_argument("Only graphlets of size 2-5 supported.");
 		}
 
 		// read input graph

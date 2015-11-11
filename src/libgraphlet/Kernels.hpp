@@ -1,9 +1,9 @@
-#ifndef ORCA_KERNELS_HPP
-#define ORCA_KERNELS_HPP
+#ifndef LIBGRAPHLET_KERNELS_HPP
+#define LIBGRAPHLET_KERNELS_HPP
 
 #include <boost/compute/utility/source.hpp>
 
-namespace orca {
+namespace libgraphlet {
 const char *kernel_orca_similarity_source = R"source(
 
 __kernel void orca_compute_similarity(

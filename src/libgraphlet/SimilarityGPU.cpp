@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <algorithm>
+#include <stdexcept>
 #include <boost/compute/container/mapped_view.hpp>
 #include <boost/compute/container/vector.hpp>
-#include <orca/OrcaException.hpp>
 #include "Kernels.hpp"
 
 namespace compute = boost::compute;
@@ -30,7 +30,7 @@ namespace orca {
 		const compute::device &device
 	) {
 		if(oa.graphletSize() != ob.graphletSize()) {
-			throw OrcaException("Orca instances not of same size.");
+			throw std::invalid_argument("Orca instances not of same size.");
 		}
 		int graphlet_size = oa.graphletSize();
 		const size_t orbits = ORBITS[graphlet_size];

@@ -1,14 +1,14 @@
 #include <iostream>
-#include <orca/GDD.hpp>
-#include <orca/OrcaException.hpp>
+#include <stdexcept>
+#include <libgraphlet/GDD.hpp>
 
-namespace orca {
+namespace libgraphlet {
 	void gdd(
-		const Orca &orca,
+		const orca::Orca &orca,
 		GDD &gdd,
 		bool normalize
 	) {
-		int orbits = ORBITS[orca.graphletSize()];
+		int orbits = orca::ORBITS[orca.graphletSize()];
 
 		gdd.clear();
 		gdd.resize(orbits);
@@ -65,7 +65,7 @@ namespace orca {
 		std::vector<float> &out
 	) {
 		if(a.size() != b.size()) {
-			throw OrcaException("GDDs not of same size");
+			throw std::invalid_argument("GDDs not of same size");
 		}
 
 		size_t n = a.size();

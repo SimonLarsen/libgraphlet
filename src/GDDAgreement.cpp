@@ -3,7 +3,7 @@
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
-#include <orca/GDD.hpp>
+#include <libgraphlet/GDD.hpp>
 #include "Graph.hpp"
 
 int main(int argc, const char **argv) {
@@ -47,17 +47,17 @@ int main(int argc, const char **argv) {
 
 	// Compute GDDs
 	std::cerr << "Computing graphlet degree distributions (1/2)";
-	orca::GDD gdd1;
-	orca::gdd(orca1, gdd1, true);
+	libgraphlet::GDD gdd1;
+	libgraphlet::gdd(orca1, gdd1, true);
 
 	std::cerr << "\rComputing graphlet degree distributions (2/2)" << std::endl;
-	orca::GDD gdd2;
-	orca::gdd(orca2, gdd2, true);
+	libgraphlet::GDD gdd2;
+	libgraphlet::gdd(orca2, gdd2, true);
 
 	// Compute GGD-agreement
 	std::cerr << "Computing GDD agreement" << std::endl;
 	std::vector<float> gdda;
-	orca::gdd_agreement(gdd1, gdd2, gdda);
+	libgraphlet::gdd_agreement(gdd1, gdd2, gdda);
 
 	// Calculate overall agreement
 	float sum = std::accumulate(gdda.begin(), gdda.end(), 0.0f);

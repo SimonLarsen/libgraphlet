@@ -3,7 +3,7 @@
 #include <graph/GraphReader.hpp>
 #include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
-#include <orca/GDD.hpp>
+#include <libgraphlet/GDD.hpp>
 #include "Graph.hpp"
 
 int main(int argc, const char **argv) {
@@ -36,8 +36,8 @@ int main(int argc, const char **argv) {
 
 	// Compute GDD
 	std::cerr << "Computing graphlet degree distribution" << std::endl;
-	orca::GDD gdd;
-	orca::gdd(orca, gdd, normalizeSwitch.getValue());
+	libgraphlet::GDD gdd;
+	libgraphlet::gdd(orca, gdd, normalizeSwitch.getValue());
 
 	// Write GDD to file
 	std::ofstream file(outputArg.getValue());

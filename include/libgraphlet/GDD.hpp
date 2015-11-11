@@ -1,15 +1,15 @@
-#ifndef ORCA_GDD_HPP
-#define ORCA_GDD_HPP 
+#ifndef LIBGRAPHLET_GDD_HPP
+#define LIBGRAPHLET_GDD_HPP 
 
 #include <vector>
 #include <map>
 #include <orca/Orca.hpp>
 
-namespace orca {
+namespace libgraphlet {
 	typedef std::vector<std::map<size_t, float>> GDD;
 
 	void gdd(
-		const Orca &orca,
+		const orca::Orca &orca,
 		GDD &gdd,
 		bool normalize = true
 	);
