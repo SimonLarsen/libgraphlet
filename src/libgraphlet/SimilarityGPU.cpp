@@ -1,4 +1,4 @@
-#include <orca/SimilarityGPU.hpp>
+#include <libgraphlet/SimilarityGPU.hpp>
 
 #include <iostream>
 #include <algorithm>
@@ -22,10 +22,10 @@ namespace {
 	};
 }
 
-namespace orca {
+namespace libgraphlet {
 	void similarityGPU(
-		const Orca &oa,
-		const Orca &ob,
+		const orca::Orca &oa,
+		const orca::Orca &ob,
 		boost::numeric::ublas::matrix<float> &sim,
 		const compute::device &device
 	) {
@@ -33,7 +33,7 @@ namespace orca {
 			throw std::invalid_argument("Orca instances not of same size.");
 		}
 		int graphlet_size = oa.graphletSize();
-		const size_t orbits = ORBITS[graphlet_size];
+		const size_t orbits = orca::ORBITS[graphlet_size];
 		const size_t na = oa.getOrbits().size1();
 		const size_t nb = ob.getOrbits().size1();
 
