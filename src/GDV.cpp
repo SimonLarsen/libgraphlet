@@ -1,7 +1,6 @@
 #include <fstream>
 #include <tclap/CmdLine.h>
 #include <graph/GraphReader.hpp>
-#include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
 #include "Graph.hpp"
 
@@ -22,9 +21,9 @@ int main(int argc, const char **argv) {
 	// Read graph
 	Graph g;
 	graph::readGraph(graphArg.getValue(), g);
-	graph::removeEdgeLoops(g);
+	remove_edge_loops(g);
 	std::vector<std::pair<size_t,size_t>> edges;
-	graph::get_edges(g, edges);
+	get_edges(g, edges);
 
 	// Compute GDVs
 	orca::Orca orca(num_vertices(g), edges, graphletSizeArg.getValue());

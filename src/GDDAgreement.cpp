@@ -1,7 +1,6 @@
 #include <fstream>
 #include <tclap/CmdLine.h>
 #include <graph/GraphReader.hpp>
-#include <graph/Algorithms.hpp>
 #include <orca/Orca.hpp>
 #include <libgraphlet/GDD.hpp>
 #include "Graph.hpp"
@@ -25,16 +24,16 @@ int main(int argc, const char **argv) {
 	std::cerr << "Loading graphs (1/2)";
 	Graph g1;
 	graph::readGraph(graph1Arg.getValue(), g1);
-	graph::removeEdgeLoops(g1);
+	remove_edge_loops(g1);
 	std::vector<std::pair<size_t,size_t>> edges1;
-	graph::get_edges(g1, edges1);
+	get_edges(g1, edges1);
 
 	std::cerr << "\rLoading graphs (2/2)" << std::endl;
 	Graph g2;
 	graph::readGraph(graph2Arg.getValue(), g2);
-	graph::removeEdgeLoops(g2);
+	remove_edge_loops(g2);
 	std::vector<std::pair<size_t,size_t>> edges2;
-	graph::get_edges(g2, edges2);
+	get_edges(g2, edges2);
 
 	// Compute GDVs
 	std::cerr << "Computing graphlet degree vectors (1/2)";
