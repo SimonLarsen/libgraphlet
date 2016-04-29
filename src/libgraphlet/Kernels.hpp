@@ -12,8 +12,8 @@ __kernel void orca_compute_similarity(
 	const uint orbits,
 	const float weights_sum,
 	__constant float *weights,
-	__global long *a,
-	__global long *b,
+	__global ulong *a,
+	__global ulong *b,
 	__global float *sim
 ) {
 	size_t global_id = get_global_id(0);
