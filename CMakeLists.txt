@@ -10,11 +10,11 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-set(ORCA_WITH_OPENCL false CACHE BOOL "Compile with OpenCL")
+set(LIBGRAPHLET_WITH_OPENCL false CACHE BOOL "Compile with OpenCL")
 
 find_package(Boost REQUIRED)
 
-if(ORCA_WITH_OPENCL)
+if(LIBGRAPHLET_WITH_OPENCL)
 	find_package(OpenCL 1.1 REQUIRED)
 endif()
 
