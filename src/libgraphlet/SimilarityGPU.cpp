@@ -3,7 +3,6 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
-#include <boost/compute/container/mapped_view.hpp>
 #include <boost/compute/container/vector.hpp>
 #include "Kernels.hpp"
 
@@ -65,10 +64,9 @@ namespace libgraphlet {
 		compute::kernel kernel = program.create_kernel("orca_compute_similarity");
 
 		compute::vector<cl_uint> buf_weights(orbits, context);
+		compute::vector<cl_ulong> buf_a(na * orbits, context);
+		compute::vector<cl_ulong> buf_b(nb * orbits, context);
 		compute::vector<cl_float> buf_sim(na * nb, context);
-
-		compute::mapped_view<cl_long> map_a(&(oa.getOrbits().data()[0]), na*orbits, context);
-		compute::mapped_view<cl_long> map_b(&(ob.getOrbits().data()[0]), nb*orbits, context);
 
 		int arg = 0;
 		kernel.set_arg(arg++, (cl_uint)na);
@@ -76,8 +74,8 @@ namespace libgraphlet {
 		kernel.set_arg(arg++, (cl_uint)orbits);
 		kernel.set_arg(arg++, (cl_float)weights_sum);
 		kernel.set_arg(arg++, buf_weights);
-		kernel.set_arg(arg++, map_a.get_buffer());
-		kernel.set_arg(arg++, map_b.get_buffer());
+		kernel.set_arg(arg++, buf_a);
+		kernel.set_arg(arg++, buf_b);
 		kernel.set_arg(arg++, buf_sim);
 
 		compute::copy(
@@ -86,7 +84,24 @@ namespace libgraphlet {
 			buf_weights.begin(),
 			queue
 		);
+
+		compute::copy_n(
+			&(oa.getOrbits().data()[0]),
+			na*orbits,
+			buf_a.begin(),
+			queue
+		);
+
+		compute::copy_n(
+			&(ob.getOrbits().data()[0]),
+			nb*orbits,
+			buf_b.begin(),
+			queue
+		);
+
 		queue.enqueue_1d_range_kernel(kernel, 0, 1024, 0);
+
+		queue.finish();
 
 		sim.resize(na, nb);
 		compute::copy(
@@ -95,7 +110,5 @@ namespace libgraphlet {
 			&(sim.data()[0]),
 			queue
 		);
-
-		queue.finish();
 	}
 }

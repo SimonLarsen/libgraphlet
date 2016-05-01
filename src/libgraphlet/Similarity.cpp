@@ -1,8 +1,6 @@
 #include <libgraphlet/Similarity.hpp>
 
 #include <algorithm>
-#include <numeric>
-#include <thread>
 #include <stdexcept>
 
 namespace {
@@ -44,33 +42,20 @@ namespace libgraphlet {
 
 		sim.resize(na, nb);
 
-		size_t nthreads = std::thread::hardware_concurrency();
-		std::vector<std::thread> threads;
+		for(size_t i = 0; i < na; ++i) {
+			for(size_t j = 0; j < nb; ++j) {
+				float D = 0.0f;
+				for(size_t k = 0; k < orbits; ++k) {
+					int64_t aik = oa.getOrbits()(i, k);
+					int64_t bjk = ob.getOrbits()(j, k);
 
-		for(size_t p = 0; p < nthreads; ++p) {
-			threads.emplace_back(std::thread(
-				[&, p](){
-					for(size_t i = p; i < na; i += nthreads) {
-						for(size_t j = 0; j < nb; ++j) {
-							float D = 0.0f;
-							for(size_t k = 0; k < orbits; ++k) {
-								int64_t aik = oa.getOrbits()(i, k);
-								int64_t bjk = ob.getOrbits()(j, k);
-
-								float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
-								float denom = log(std::max(aik, bjk) + 2.0f);
-								D += weights[k] * num / denom;
-							}
-
-							sim(i, j) = 1.0f - D / weights_sum;
-						}
-					}
+					float num = fabs(log(aik + 1.0f) - log(bjk + 1.0f));
+					float denom = log(std::max(aik, bjk) + 2.0f);
+					D += weights[k] * num / denom;
 				}
-			));
-		}
 
-		for(auto &t : threads) {
-			t.join();
+				sim(i, j) = 1.0f - D / weights_sum;
+			}
 		}
 	}
 }
