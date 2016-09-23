@@ -1,4 +1,5 @@
 #include <fstream>
+#include <numeric>
 #include <tclap/CmdLine.h>
 #include <graph/GraphReader.hpp>
 #include <orca/Orca.hpp>

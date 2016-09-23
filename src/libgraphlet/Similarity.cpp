@@ -1,5 +1,6 @@
 #include <libgraphlet/Similarity.hpp>
 
+#include <numeric>
 #include <algorithm>
 #include <stdexcept>
 
